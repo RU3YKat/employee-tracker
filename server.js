@@ -52,9 +52,9 @@ const db = mysql.createConnection(
 //     console.log(result);
 // });
 
-// db.query(`SELECT * FROM departments`, (err, rows) => {
-//     console.log(rows);
-// });
+db.query(`SELECT * FROM departments`, (err, rows) => {
+    console.log(rows);
+});
 
 // Default response for any other request (Not Found)
 // Will override all other requests! Put at END!
