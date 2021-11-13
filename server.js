@@ -49,6 +49,7 @@ app.delete('/api/department/:id', (req, res) => {
     db.query(sql, params, (err, result) => {
         if (err) {
             res.status(400).json({ error: res.message });
+        // Prevents deletion of department that DNE
         } else if (!result.affectedRows) {
             res.json({
                 message: 'Department not found'
