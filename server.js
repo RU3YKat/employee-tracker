@@ -120,6 +120,42 @@ app.get('/api/roles', (req, res) => {
     });
 });
 
+// Get role by id
+app.get('/api/role/:id', (req, res) => {
+    const sql = `SELECT * FROM roles WHERE id = ?`;
+    const params = [req.params.id];
+
+    db.query(sql, params, (err, row) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'success',
+            data: row
+        });
+    });
+});
+
+// Create a role
+app.post('/api/role', ({ body }, res) => {
+    const sql = `INSERT INTO roles (title, salary, department_id)
+    VALUES (?,?,?)`;
+    const params = [body.title, body.salary, body.department_id];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'New role was added successfully',
+            data: body
+        });
+    });
+});
+
+
 // Delete a role
 app.delete('/api/roles/:id', (req, res) => {
     const sql = `DELETE FROM roles WHERE ID = ?`;
