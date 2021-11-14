@@ -66,9 +66,9 @@ app.delete('/api/department/:id', (req, res) => {
 
 // Create a department
 app.post('/api/department', ({ body }, res) => {
-    const sql = `INSERT INTO departments (dept_name)
+    const sql = `INSERT INTO departments (name)
     VALUES (?)`;
-    const params = (body.dept_name);
+    const params = (body.name);
 
     db.query(sql, params, (err, result) => {
         if (err) {
@@ -95,6 +95,51 @@ app.get('/api/departments', (req, res) => {
             message: 'success',
             data: rows
         });
+    });
+});
+
+
+
+// Get all roles (shows job title, role id, department name role belongs to, salary)
+app.get('/api/roles', (req, res) => {
+    const sql = `SELECT roles.*, departments.name
+        AS department_name
+        FROM roles
+        LEFT JOIN departments
+        ON roles.department_id = departments.id`;
+
+    db.query(sql, (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'success',
+            data: rows
+        });
+    });
+});
+
+// Delete a role
+app.delete('/api/roles/:id', (req, res) => {
+    const sql = `DELETE FROM roles WHERE ID = ?`;
+    const params = [req.params.id];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: res.message });
+        // Prevents deletion of role that DNE
+        } else if (!result.affectedRows) {
+            res.json({
+                message: 'Role not found'
+            });
+        } else {
+            res.json({
+                message: 'Successfully deleted',
+                changes: result.affectedRows,
+                id: req.params.id
+            });
+        }
     });
 });
 
