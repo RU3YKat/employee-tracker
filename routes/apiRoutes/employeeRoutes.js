@@ -76,22 +76,22 @@ router.delete('/employee/:id', (req, res) => {
     });
 });
 
-// Create a new employee NEEDS HELP WITH HOW TO APPLY DATA FROM OTHER QUERIES
-// router.post('/employee', ({ body }, res) => {
-//     const sql = `INSERT INTO employee (first_name, last_name) 
-//     VALUES (?,?)`;
-//     const params = [body.first_name, body.last_name];
+// Create a new employee
+router.post('/employee', ({ body }, res) => {
+    const sql = `INSERT INTO employee (first_name, last_name) 
+    VALUES (?,?)`;
+    const params = [body.first_name, body.last_name];
 
-//     db.query(sql, params, (err, result) => {
-//         if (err) {
-//             res.status(400).json({ error: err.message });
-//             return;
-//         }
-//         res.json({
-//             message: 'success',
-//             data: body
-//         });
-//     });
-// });
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'success',
+            data: body
+        });
+    });
+});
 
 module.exports = router;

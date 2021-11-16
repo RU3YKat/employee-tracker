@@ -16,6 +16,7 @@ CREATE TABLE roles (
         FOREIGN KEY (department_id) 
         REFERENCES departments(id) 
         ON DELETE SET NULL
+        ON UPDATE CASCADE
 );
 /* CONSTRAINT provides that no id can be inserted into roles table if it doesn't exist in departments first */
 /* BE AWARE of order, roles table cannot exist without departments, so it comes after. SAME with DROPS, roles drops first */
@@ -27,15 +28,17 @@ CREATE TABLE employee (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INTEGER,
+    manager_id INTEGER,
     CONSTRAINT fk_role
         FOREIGN KEY (role_id)
         REFERENCES roles(id)
-        ON DELETE CASCADE,
-    manager_id INTEGER,
-    CONSTRAINT manager_ibfk_1
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_manager
         FOREIGN KEY (manager_id)
         REFERENCES employee(id)
         ON DELETE SET NULL
+        ON UPDATE CASCADE
 );
 
-ALTER TABLE employee DROP FOREIGN KEY manager_ibfk_1;
+-- ALTER TABLE employee DROP FOREIGN KEY manager_ibfk_1;
